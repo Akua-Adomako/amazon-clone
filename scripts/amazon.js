@@ -41,7 +41,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart js-added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -92,11 +92,16 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
 
     document.querySelector(".js-cart-quantity").textContent = cartQuantity; // Update cart quantity display
 
-    // Show added to cart message
-          const addedMessage = document.querySelector(
-            `.js-added-to-cart-${productId}`
-          );
-        
+    // Show added-to-cart message
+    const addedMessage = document.querySelector(
+      `.js-added-to-cart-${productId}`
+    );
+    addedMessage.classList.add("added-to-cart-visible");
 
+    // Optionally, hide the message after a few seconds
+    setTimeout(() => {
+      addedMessage.classList.remove("added-to-cart-visible");
+    }, 2000); // 2 seconds
   });
 });
+
