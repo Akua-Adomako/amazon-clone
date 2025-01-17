@@ -56,6 +56,8 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
+const timeoutIds = {}; // Object to store timeout IDs for each product
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const { productId } = button.dataset;
@@ -96,12 +98,20 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     const addedMessage = document.querySelector(
       `.js-added-to-cart-${productId}`
     );
+
+    // Clear the previous timeout if it exists
+    if (timeoutIds[productId]) {
+      clearTimeout(timeoutIds[productId]);
+    }
+
     addedMessage.classList.add("added-to-cart-visible");
 
-    // Optionally, hide the message after a few seconds
-    setTimeout(() => {
+    // Start a new timeout and store its ID
+    timeoutIds[productId] = setTimeout(() => {
       addedMessage.classList.remove("added-to-cart-visible");
+      delete timeoutIds[productId]; // Remove the ID from the object after it expires
     }, 2000); // 2 seconds
   });
 });
+
 
