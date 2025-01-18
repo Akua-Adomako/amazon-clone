@@ -1,5 +1,5 @@
 import { products } from "../data/products.js";
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
 
 let productsHTML = "";
 
@@ -59,34 +59,13 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-const timeoutIds = {}; // Object to store timeout IDs for each product
-
-// Corrected addToCart function
-function addToCart(productId, selectedQuantity) {
-  let matchingItem;
-
-  // Check if the product is already in the cart
-  cart.forEach((item) => {
-    if (item.productId === productId) {
-      matchingItem = item;
-    }
-  });
-
-  if (matchingItem) {
-    matchingItem.quantity += selectedQuantity; // Add the selected quantity
-  } else {
-    cart.push({
-      productId,
-      quantity: selectedQuantity, // Set the initial quantity
-    });
-  }
-}
+const timeoutIds = {};
 
 function updateCartQuantity() {
   let cartQuantity = 0;
 
-  cart.forEach((item) => {
-    cartQuantity += item.quantity;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
   });
 
   document.querySelector(".js-cart-quantity").textContent = cartQuantity;
