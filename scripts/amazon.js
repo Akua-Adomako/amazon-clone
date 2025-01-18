@@ -61,6 +61,28 @@ document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
 const timeoutIds = {}; // Object to store timeout IDs for each product
 
+// Corrected addToCart function
+function addToCart(productId, selectedQuantity) {
+  let matchingItem;
+
+  // Check if the product is already in the cart
+  cart.forEach((item) => {
+    if (item.productId === productId) {
+      matchingItem = item;
+    }
+  });
+
+  if (matchingItem) {
+    matchingItem.quantity += selectedQuantity; // Add the selected quantity
+  } else {
+    cart.push({
+      productId,
+      quantity: selectedQuantity, // Set the initial quantity
+    });
+  }
+}
+
+// Event listener for Add to Cart buttons
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const { productId } = button.dataset;
@@ -71,22 +93,8 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     );
     const selectedQuantity = parseInt(quantitySelector.value, 10);
 
-    let matchingItem;
-
-    cart.forEach((item) => {
-      if (item.productId === productId) {
-        matchingItem = item;
-      }
-    });
-
-    if (matchingItem) {
-      matchingItem.quantity += selectedQuantity; // Add selected quantity
-    } else {
-      cart.push({
-        productId,
-        quantity: selectedQuantity,
-      });
-    }
+    // Call addToCart with the selected quantity
+    addToCart(parseInt(productId, 10), selectedQuantity);
 
     // Update total cart quantity
     let cartQuantity = 0;
@@ -116,5 +124,6 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     }, 2000); // 2 seconds
   });
 });
+
 
 
