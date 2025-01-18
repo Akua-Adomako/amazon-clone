@@ -82,46 +82,43 @@ function addToCart(productId, selectedQuantity) {
   }
 }
 
-// Event listener for Add to Cart buttons
+function updateCartQuantity() {
+  let cartQuantity = 0;
+
+  cart.forEach((item) => {
+    cartQuantity += item.quantity;
+  });
+
+  document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+}
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const { productId } = button.dataset;
 
-    // Get the selected quantity for the product
     const quantitySelector = document.querySelector(
       `.js-quantity-selector-${productId}`
     );
     const selectedQuantity = parseInt(quantitySelector.value, 10);
 
-    // Call addToCart with the selected quantity
     addToCart(parseInt(productId, 10), selectedQuantity);
 
-    // Update total cart quantity
-    let cartQuantity = 0;
+    updateCartQuantity();
 
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    });
-
-    document.querySelector(".js-cart-quantity").textContent = cartQuantity; // Update cart quantity display
-
-    // Show added-to-cart message
     const addedMessage = document.querySelector(
       `.js-added-to-cart-${productId}`
     );
 
-    // Clear the previous timeout if it exists
     if (timeoutIds[productId]) {
       clearTimeout(timeoutIds[productId]);
     }
 
     addedMessage.classList.add("added-to-cart-visible");
 
-    // Start a new timeout and store its ID
     timeoutIds[productId] = setTimeout(() => {
       addedMessage.classList.remove("added-to-cart-visible");
-      delete timeoutIds[productId]; // Remove the ID from the object after it expires
-    }, 2000); // 2 seconds
+      delete timeoutIds[productId];
+    }, 2000); 
   });
 });
 
